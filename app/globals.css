@@ -1,0 +1,75 @@
+:root {
+  /* base backgrounds */
+  --color-sandy: #f5f2e1;
+  --color-olive: #d9ead3;
+
+  /* neutrals */
+  --color-grey: #808080;
+  --color-dark: #000000;
+}
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-sandy);
+  color: var(--color-dark);
+  font-family: var(--font-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.swiper-pagination-bullet-active {
+  width: 15px !important;
+  height: 15px !important;
+  background: #000 !important;
+  opacity: 1;
+}
+
+.swiper-pagination {
+  position: relative !important;
+  margin-top: 16px;
+}

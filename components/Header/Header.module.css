@@ -1,0 +1,177 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (min-width: 1440px) {
+  .header {
+    position: relative;
+    flex-direction: row;
+  }
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 25px;
+  }
+
+  .nav_buttons {
+    border: 1px solid #45563f;
+    border-radius: 30px;
+    padding: 10px 25px;
+    box-shadow: 9px 6px 4px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  .nav_button {
+    font-weight: 400;
+    font-size: 24px;
+    font-family: var(--font-heading);
+  }
+}
+
+@media (min-width: 1440px) {
+  .nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    gap: 30px;
+    margin-bottom: 13px;
+  }
+}
+
+.text_block {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .text_block {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    margin-right: 40px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .text_block {
+    margin-right: 0px;
+    margin-top: 10px;
+    justify-content: space-between;
+  }
+}
+
+.burger_btn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+@media (min-width: 768px) {
+  .burger_btn {
+    display: none;
+  }
+}
+
+.burger_btn_svg {
+  fill: var(--color-grey);
+}
+
+.text_name {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 130%;
+  margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+  .text_name {
+    width: 224px;
+    font-size: 40px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .text_name {
+    width: 520px;
+    font-size: 51px;
+    font-variant: all-small-caps;
+  }
+}
+
+.text_post {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 130%;
+  font-family: var(--font-heading);
+  margin-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+  .text_post {
+    font-size: 20px;
+    width: 224px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .text_post {
+    font-size: 30px;
+    width: 338px;
+  }
+}
+
+.photo {
+  border-radius: 50%;
+}
+
+@media (min-width: 768px) {
+  .photo {
+    margin-right: 43px;
+  }
+
+  .hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1440px) {
+  .photo {
+    margin-right: 85px;
+    width: 405px;
+    height: 405px;
+  }
+}
+
+.leafs {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .leafs {
+    display: block;
+    border-radius: 40%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .leafs {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 290px;
+    height: 290px;
+    margin-top: 290px;
+  }
+}
