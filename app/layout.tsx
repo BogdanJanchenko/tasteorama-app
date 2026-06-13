@@ -13,15 +13,25 @@ const montserrat = localFont({
       weight: '400',
       style: 'normal',
     },
+    {
+      path: '../public/fonts/Montserrat-SemiBold.woff2',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Montserrat-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
   ],
   variable: '--font-main',
 });
 
-const armata = localFont({
+const dmSans = localFont({
   src: [
     {
-      path: '../public/fonts/Armata-Regular.woff2',
-      weight: '400',
+      path: '../public/fonts/DMSans-Bold.woff2',
+      weight: '700',
       style: 'normal',
     },
   ],
@@ -30,7 +40,7 @@ const armata = localFont({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${armata.variable}`}>
+    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body>{children}</body>
     </html>
   );
