@@ -1,13 +1,29 @@
 'use client';
 
-import styles from './Header.module.css';
+import Link from 'next/link';
 
-const Header = () => {
+import Navigation from '@/components/Navigation/Navigation';
+
+/*
+  Header згідно ТЗ містить:
+
+  - логотип;
+  - навігацію;
+  - інформацію про користувача.
+
+  Авторизація поки не реалізована,
+  тому використовується заглушка.
+*/
+
+export default function Header() {
   return (
-    <>
-      <header className={styles.header}></header>
-    </>
-  );
-};
+    <header>
+      <Link href="/">
+        Tasteorama
+      </Link>
 
-export default Header;
+      <Navigation />
+    </header>
+  );
+}
+
