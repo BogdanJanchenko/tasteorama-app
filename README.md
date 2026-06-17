@@ -98,8 +98,8 @@ NEXT_PUBLIC_API_URL=https://tasteorama-server.onrender.com
 
 ## Команда
 
-- [Bogdan Janchenko](https://github.com/BogdanJanchenko) — Team Lead
-- [Daria Golovashova](https://github.com/DariaGolovashova)
+- [Bogdan Janchenko](https://github.com/BogdanJanchenko) - Team Lead
+- [Daria Golovashova](https://github.com/DariaGolovashova) - Scrum Master
 - [Vitalina Sinkova](https://github.com/Vitalina90)
 - [Yuriy Stepanishin](https://github.com/YuriyStepanishin)
 - [Tetiana Furmanets](https://github.com/tetiana-furmanets)
