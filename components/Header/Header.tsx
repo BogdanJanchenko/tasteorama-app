@@ -20,15 +20,12 @@ export default function Header() {
   return (
     <div>
       <Container>
-       <header>
-      <Link href="/">
-        Tasteorama
-      </Link>
+        <header>
+          <Link href="/">Tasteorama</Link>
 
-      <Navigation />
+          <Navigation />
         </header>
-        </Container>
+      </Container>
     </div>
   );
 }
-
