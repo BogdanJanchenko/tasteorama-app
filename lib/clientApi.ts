@@ -1,6 +1,8 @@
 import { ServerRecipe } from '@/types/serverRecipe';
 import { nextServer } from './api';
 import { User } from '@/types/user';
+import { Category } from '@/types/category';
+import { Ingredient } from '@/types/indredient';
 
 // ------------------------------------------------
 // Auth API
@@ -44,11 +46,6 @@ export const refresh = async (): Promise<MessageResponse> => {
 // Categories API
 // ------------------------------------------------
 
-interface Category {
-  _id: string;
-  name: string;
-}
-
 export const fetchCategories = async (): Promise<Category[]> => {
   const response = await nextServer.get<Category[]>('/api/categories');
   return response.data;
@@ -57,13 +54,6 @@ export const fetchCategories = async (): Promise<Category[]> => {
 // ------------------------------------------------
 // Ingredients API
 // ------------------------------------------------
-
-interface Ingredient {
-  _id: string;
-  name: string;
-  desc: string;
-  img: string;
-}
 
 export const fetchIngredients = async (): Promise<Ingredient[]> => {
   const response = await nextServer.get<Ingredient[]>('/api/ingredients');
