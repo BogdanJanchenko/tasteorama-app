@@ -1,20 +1,55 @@
 'use client';
 
 import { useState } from 'react';
-import styles from './SeardchBox.module.css';
-import { Placeholder } from 'react-select/animated';
+import css from './SeardchBox.module.css';
+// import { Placeholder } from 'react-select/animated';
 
-const handleSubmit = () => {
-  event.preventDefault;
+type PropsSearchBox = {
+  onSearch: (value: string) => void | Promise<void>;
+  loading?: boolean;
 };
 
-export default function SearchBox() {
+export default function SearchBox({ onSearch, loading }: PropsSearchBox) {
+  //   const [searchQuery, setSearchQuery] = useState('');
   const [value, setValue] = useState('');
-  return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={value} placeholder={placeholder} />
+  const [error, setError] = useState<string | null>(null);
 
-      <button>Search</button>
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // const err = validate(value);
+    const trimedValue = value.trim();
+
+    if (!trimedValue) {
+      setError('Search field cannot be empty');
+      return;
+    }
+
+    if (trimedValue.length < 2) {
+      setError('Enter at least 2 characters');
+      return;
+    }
+
+    setError(null);
+    onSearch(trimedValue);
+  };
+
+  return (
+    <form className={css.searchBox} onSubmit={handleSubmit}>
+      <input
+        className={css.searchBoxInput}
+        type="text"
+        placeholder="Search recipes"
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+          setError(null);
+        }}
+      />
+
+      <button className={css.searchBoxButton} type="submit" disabled={loading}>
+        Search
+      </button>
+      {error && <div className={css.error}>{error}</div>}
     </form>
   );
 }
