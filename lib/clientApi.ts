@@ -64,7 +64,7 @@ export const fetchIngredients = async (): Promise<Ingredient[]> => {
 // Recipes API
 // ------------------------------------------------
 
-interface FetchRecipesParams {
+export interface FetchRecipesParams {
   page: number;
   perPage?: number;
   search?: string;
@@ -72,7 +72,7 @@ interface FetchRecipesParams {
   ingredient?: string;
 }
 
-interface FetchRecipesResponse {
+export interface FetchRecipesResponse {
   page: number;
   perPage: number;
   totalRecipes: number;
