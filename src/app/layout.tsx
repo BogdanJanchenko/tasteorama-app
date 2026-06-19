@@ -1,4 +1,5 @@
 import localFont from 'next/font/local';
+import QueryProvider from '@/src/providers/QueryProvider';
 import 'modern-normalize';
 import './globals.css';
 
@@ -40,8 +41,14 @@ const dmSans = localFont({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${montserrat.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
