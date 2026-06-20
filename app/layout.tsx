@@ -13,6 +13,10 @@ import AuthProvider from "@/context/AuthProvider";
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
+export const metadata = {
+  metadataBase: new URL("http://localhost:3000"),
+  title: "Tasteorama",
+};
 
 const montserrat = localFont({
   src: [
@@ -65,3 +69,4 @@ export default function RootLayout({
     </html>
   );
 }
+

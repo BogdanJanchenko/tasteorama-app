@@ -35,23 +35,26 @@ useEffect(() => {
   <div
     className={styles.modal}
      role="dialog"
-  aria-modal="true"
+        aria-modal="true"
+        aria-labelledby="auth-title"
     onClick={(e) => e.stopPropagation()}>
         <button className={styles.close} onClick={onClose}>
           ×
         </button>
 
-<h2>Please log in or register</h2>
-        <p>
-          To save this recipe, you need to authorize first
-        </p>
+  <h2 id="auth-title">Please log in or register</h2>
 
-        <div className={styles.actions}>
+  <p>
+    To save this recipe, you need to authorize first
+  </p>
+
+          <div className={styles.actions}>
+            
 <button
   className={styles.login}
 onClick={() => {
   onClose();
-  router.push("/auth/login");
+  router.push("/login");
 }}
 >
   Log in
@@ -61,7 +64,7 @@ onClick={() => {
   className={styles.register}
 onClick={() => {
   onClose();
-  router.push("/auth/register");
+  router.push("/register");
 }}
 >
   Register
@@ -71,4 +74,3 @@ onClick={() => {
     </div>
   );
 }
-   

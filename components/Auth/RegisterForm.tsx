@@ -8,7 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { registerUser } from "@/lib/auth";
+import { register } from "@/lib/clientApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { registerSchema } from "@/validation/registerSchema";
@@ -39,13 +39,13 @@ const setUser = useUserStore((state) => state.setUser);
   try {
     setLoading(true);
 
-    const data = await registerUser({
-      name: values.name,
-      email: values.email,
-      password: values.password,
-    });
+const data = await register({
+  name: values.name,
+  email: values.email,
+  password: values.password,
+});
 
-    setUser(data.user); 
+setUser(data.user);
 
     toast.success("Registration successful 🎉");
 
@@ -67,10 +67,14 @@ const setUser = useUserStore((state) => state.setUser);
           Join our community of culinary enthusiasts, save your favorite recipes, and share your cooking creations
         </p>
 
-        <form onSubmit={formik.handleSubmit} className={styles.form}>
+<form onSubmit={formik.handleSubmit} className={styles.form}>
+  
           {/* NAME */}
-          <label className={styles.label}>Enter your name</label>
+<label htmlFor="name" className={styles.label}>
+  Enter your name <span>*</span>
+          </label>
           <input
+            id="name"
             type="text"
             name="name"
             placeholder="Max"
@@ -85,8 +89,9 @@ className={`${styles.input} ${
           )}
 
           {/* EMAIL */}
-          <label className={styles.label}>Enter your email address</label>
+          <label htmlFor="email" className={styles.label}>Enter your email address</label>
           <input
+            id="email"
             type="email"
             name="email"
             placeholder="email@gmail.com"
@@ -102,9 +107,10 @@ className={`${styles.input} ${
           )}
 
           {/* PASSWORD */}
-          <label className={styles.label}>Create a strong password</label>
+          <label htmlFor="password" className={styles.label}>Create a strong password</label>
           <div className={styles.passwordWrapper}>
             <input
+              id="password"
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="********"
@@ -137,9 +143,10 @@ className={`${styles.input} ${
           )}
 
           {/* CONFIRM */}
-          <label className={styles.label}>Repeat your password</label>
+          <label htmlFor="confirmPassword" className={styles.label}>Repeat your password</label>
           <div className={styles.passwordWrapper}>
             <input
+              id="confirmPassword"
               type={showConfirm ? "text" : "password"}
               name="confirmPassword"
               placeholder="********"
@@ -153,7 +160,8 @@ className={`${styles.input} ${
 }`}
           />
 <button
-  type="button"
+              type="button"
+                aria-label="Toggle password visibility"
   className={styles.eye}
   onClick={() => setShowConfirm(!showConfirm)}
 >
@@ -180,13 +188,17 @@ className={`${styles.input} ${
               </p>
             )}
 
-<button type="submit" className={styles.button} disabled={loading}>
+<button
+  type="submit"
+  className={styles.button}
+            disabled={loading || !(formik.isValid && formik.dirty)}
+          >
   {loading ? <span className={styles.loader}></span> : "Create account"}
 </button>
 
           <p className={styles.loginText}>
             Already have an account?{" "}
-            <Link href="/auth/login">Log in</Link>
+            <Link href="/login">Log in</Link>
           </p>
         </form>
       </div>
