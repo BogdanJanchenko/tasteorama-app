@@ -22,19 +22,14 @@ const Home = () => {
     }
   };
   return (
-
-
-      <Section>
-        {loading && <Loader />}
-        <Container>
-          <h2>Demo Save</h2>
-          <SaveButton />
-        </Container>
-        <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={loading} />
-      </Section>
-
-      
-
+    <Section>
+      {loading && <Loader />}
+      <Container>
+        <h2>Demo Save</h2>
+        <SaveButton />
+      </Container>
+      <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={loading} />
+    </Section>
   );
 };
 
