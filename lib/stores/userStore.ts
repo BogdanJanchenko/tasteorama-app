@@ -1,11 +1,7 @@
 import { create } from 'zustand';
 import { getMe } from "@/lib/clientApi";
+import { User } from '@/types/user';
 
-type User = {
-  _id: string;
-  name: string;
-  favorites: string[];
-};
 
 type AuthStore = {
   user: User | null;
