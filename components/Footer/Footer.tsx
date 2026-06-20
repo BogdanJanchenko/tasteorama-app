@@ -3,13 +3,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-<<<<<<< HEAD
 import AuthModal from '@/components/AuthModal/AuthModal';
 import Container from '../Container/Container';
-=======
-import AuthModal from '@/components/Auth/AuthModal';
-import Container from '@/components/Container/Container';
->>>>>>> main
 
 /*
   Footer згідно ТЗ містить:
