@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 
-import Filters from '@/src/components/Filters/Filters';
-import RecipesList from '@/src/components/RecipesList/RecipesList';
-import NoRecipes from '@/src/components/NoRecipes/NoRecipes';
-import Loader from '@/src/components/Loader/Loader';
-import Pagination from '@/src/components/Pagination/Pagination';
+import Filters from '@/components/Filters/Filters';
+import RecipesList from '@/components/RecipesList/RecipesList';
+import NoRecipes from '@/components/NoRecipes/NoRecipes';
+import Loader from '@/components/Loader/Loader';
+import Pagination from '@/components/Pagination/Pagination';
 
-import { useCategories } from '@/src/hooks/useCategories';
-import { useIngredients } from '@/src/hooks/useIngredients';
-import { useRecipes } from '@/src/hooks/useRecipes';
+import { useCategories } from '@/hooks/useCategories';
+import { useIngredients } from '@/hooks/useIngredients';
+import { useRecipes } from '@/hooks/useRecipes';
 
 const RecipesPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -42,6 +42,7 @@ const RecipesPage = () => {
 
   return (
     <>
+      <h1>Recipes</h1>
       <Filters
         recipesCount={recipesCount}
         categories={categories}

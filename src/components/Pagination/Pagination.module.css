@@ -1,44 +1,26 @@
-.pagination {
+.wrapper {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 12px;
   margin-top: 40px;
 }
 
-.page,
-.arrow {
-  width: 44px;
+.loadMore {
+  min-width: 183px;
   height: 44px;
 
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
 
-  background: transparent;
+  background-color: #b47b45;
+  color: #fff;
 
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
 
-  transition: all 250ms ease;
+  transition: opacity 250ms ease;
 }
 
-.page:hover,
-.arrow:hover:not(:disabled) {
-  background-color: rgba(184, 133, 82, 0.15);
-}
-
-.active {
-  background-color: #b88552;
-  color: #fff;
-  font-weight: 600;
-}
-
-.arrow {
-  background-color: #b88552;
-  color: #fff;
-}
-
-.arrow:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.loadMore:hover {
+  opacity: 0.9;
 }

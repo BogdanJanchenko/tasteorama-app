@@ -7,30 +7,12 @@ interface PaginationProps {
 }
 
 const Pagination = ({ page, totalPages, onPageChange }: PaginationProps) => {
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  if (page >= totalPages) return null;
 
   return (
-    <div className={styles.pagination}>
-      <button className={styles.arrow} disabled={page === 1} onClick={() => onPageChange(page - 1)}>
-        ←
-      </button>
-
-      {pages.map((item) => (
-        <button
-          key={item}
-          onClick={() => onPageChange(item)}
-          className={`${styles.page} ${page === item ? styles.active : ''}`}
-        >
-          {item}
-        </button>
-      ))}
-
-      <button
-        className={styles.arrow}
-        disabled={page === totalPages}
-        onClick={() => onPageChange(page + 1)}
-      >
-        →
+    <div className={styles.wrapper}>
+      <button className={styles.loadMore} onClick={() => onPageChange(page + 1)}>
+        Load More
       </button>
     </div>
   );

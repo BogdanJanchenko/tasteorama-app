@@ -1,4 +1,4 @@
-import type { Recipe } from '@/src/types/recipe';
+import type { Recipe } from '@/types/recipe';
 import Image from 'next/image';
 import styles from './RecipeCard.module.css';
 import Link from 'next/link';
@@ -33,11 +33,10 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
         {recipe.cals ? `~${recipe.cals} cals` : 'No information calories'}
       </p>
 
-      <Link href={`/recipes/${recipe._id}`} className={styles.learnMore}>
-        Learn More
-      </Link>
       <div className={styles.actions}>
-        <button className={styles.learnMore}>Learn More</button>
+        <Link className={styles.learnMore} href={`/recipes/${recipe._id}`}>
+          Learn More
+        </Link>
 
         <button className={styles.favorite}>
           <Image src="/icons/iconFavorite.svg" alt="Favorite icon" width={24} height={24} />

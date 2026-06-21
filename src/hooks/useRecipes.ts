@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRecipes } from '@/src/services/recipesApi';
+import { getRecipes } from '@/services/recipesApi';
 
 interface RecipesParams {
   page?: number;

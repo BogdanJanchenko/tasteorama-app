@@ -1,5 +1,5 @@
-import type { Recipe } from '@/src/types/recipe';
-import RecipeCard from '@/src/components/RecipeCard/RecipeCard';
+import type { Recipe } from '@/types/recipe';
+import RecipeCard from '@/components/RecipeCard/RecipeCard';
 import styles from './RecipesList.module.css';
 
 interface RecipesListProps {

@@ -1,5 +1,4 @@
 import localFont from 'next/font/local';
-import QueryProvider from '@/src/providers/QueryProvider';
 import 'modern-normalize';
 import './globals.css';
 
@@ -7,20 +6,26 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+import { Toaster } from 'react-hot-toast';
+
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+import TanStackProvider from '@/providers/TanStackProvider';
+
 const montserrat = localFont({
   src: [
     {
-      path: '../public/fonts/Montserrat-Regular.woff2',
+      path: '../../public/fonts/Montserrat-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Montserrat-SemiBold.woff2',
+      path: '../../public/fonts/Montserrat-SemiBold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../public/fonts/Montserrat-Bold.woff2',
+      path: '../../public/fonts/Montserrat-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
@@ -31,7 +36,7 @@ const montserrat = localFont({
 const dmSans = localFont({
   src: [
     {
-      path: '../public/fonts/DMSans-Bold.woff2',
+      path: '../../public/fonts/DMSans-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
@@ -41,13 +46,14 @@ const dmSans = localFont({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${montserrat.variable} ${dmSans.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <TanStackProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <Toaster position="top-right" />
+        </TanStackProvider>
       </body>
     </html>
   );
