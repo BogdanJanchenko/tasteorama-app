@@ -1,7 +1,7 @@
 import LoginForm from '../../../components/Auth/LoginForm/LoginFrom';
-console.log('LOGIN PAGE');
 
 export default function AuthPage() {
+  console.log('LOGIN PAGE');
   return (
     <main>
       <LoginForm />

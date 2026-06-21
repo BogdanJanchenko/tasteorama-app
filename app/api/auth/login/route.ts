@@ -7,8 +7,8 @@ import { logErrorResponse } from '../../_utils/utils';
 
 export async function POST(req: NextRequest) {
   try {
-    console.log('req', req);
-    console.log('api1');
+    // console.log('req', req);
+    // console.log('api1');
 
     const body = await req.json();
 
@@ -21,6 +21,9 @@ export async function POST(req: NextRequest) {
       const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
       for (const cookieStr of cookieArray) {
         const parsed = parse(cookieStr);
+
+        // console.log('parsed', parsed);
+
         const options = {
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
           path: parsed.Path,
@@ -29,6 +32,9 @@ export async function POST(req: NextRequest) {
         if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
         if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
       }
+
+      console.log('route.ts apiRes.data', apiRes.data); //
+      console.log('cookieStore', cookieStore);
 
       return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
