@@ -25,10 +25,7 @@ export interface LoginProps {
 }
 
 export const login = async (data: LoginProps): Promise<User> => {
-  // console.log('body', data);
-  // console.log('login', nextServer);
   const response = await nextServer.post<User>('/auth/login', data);
-  // console.log('login2', login);
   return response.data;
 };
 

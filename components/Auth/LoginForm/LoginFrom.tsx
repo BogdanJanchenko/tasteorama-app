@@ -9,7 +9,7 @@ import { useAuthStore } from '../../../lib/stores/userStore';
 import { LoginProps } from '@/lib/clientApi';
 
 const Login = () => {
-  console.log('Login render');
+  console.log('Login render1');
 
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
