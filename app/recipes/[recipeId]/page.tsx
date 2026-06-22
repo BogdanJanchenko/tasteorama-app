@@ -1,5 +1,4 @@
 import RecipeDetails from '@/components/Recipe/RecipeDetails';
-import NotFoundRecipePage from '@/components/NotFoundRecipePage/NotFoundRecipePage';
 import { fetchRecipeById } from '@/lib/clientApi';
 import { ServerRecipe } from '@/types/serverRecipe';
 import { notFound } from 'next/navigation';
