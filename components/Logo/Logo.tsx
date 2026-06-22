@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import LogoIcon from '../../../icons/LogoIcon';
+import LogoIcon from '../../icons/LogoIcon';
 
 import css from './Logo.module.css';
 

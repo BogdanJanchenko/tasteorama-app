@@ -16,6 +16,7 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
         width={240}
         height={240}
         className={styles.image}
+        priority
       />
 
       <div className={styles.header}>
@@ -29,16 +30,14 @@ const RecipeCard = ({ recipe }: RecipeCardProps) => {
 
       <p className={styles.description}>{recipe.description}</p>
 
-      <p className={styles.calories}>
-        {recipe.cals ? `~${recipe.cals} cals` : 'No information calories'}
-      </p>
+      <p className={styles.calories}>{recipe.cals ? `~${recipe.cals} cals` : '-- cals'}</p>
 
       <div className={styles.actions}>
         <Link className={styles.learnMore} href={`/recipes/${recipe._id}`}>
           Learn More
         </Link>
 
-        <button className={styles.favorite}>
+        <button className={styles.favorite} onClick={() => alert('В разработке')}>
           <Image src="/icons/iconFavorite.svg" alt="Favorite icon" width={24} height={24} />
         </button>
       </div>

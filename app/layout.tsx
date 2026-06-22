@@ -15,17 +15,17 @@ import TanStackProvider from '@/providers/TanStackProvider';
 const montserrat = localFont({
   src: [
     {
-      path: '../../public/fonts/Montserrat-Regular.woff2',
+      path: '../public/fonts/Montserrat-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Montserrat-SemiBold.woff2',
+      path: '../public/fonts/Montserrat-SemiBold.woff2',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Montserrat-Bold.woff2',
+      path: '../public/fonts/Montserrat-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
@@ -36,7 +36,7 @@ const montserrat = localFont({
 const dmSans = localFont({
   src: [
     {
-      path: '../../public/fonts/DMSans-Bold.woff2',
+      path: '../public/fonts/DMSans-Bold.woff2',
       weight: '700',
       style: 'normal',
     },

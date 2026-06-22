@@ -29,7 +29,6 @@ const RecipesPage = () => {
     search,
   });
 
-  const recipes = data?.recipes ?? [];
   const totalPages = data?.totalPages ?? 1;
   const recipesCount = data?.totalRecipes ?? 0;
 
@@ -62,9 +61,9 @@ const RecipesPage = () => {
 
       {isLoading && <Loader />}
 
-      {!isLoading && recipes.length === 0 && <NoRecipes />}
+      {!isLoading && data?.recipes.length === 0 && <NoRecipes />}
 
-      {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
+      {!isLoading && data?.recipes.length > 0 && <RecipesList recipes={data.recipes} />}
 
       {totalPages > 1 && <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />}
     </>
