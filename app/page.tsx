@@ -1,45 +1,126 @@
 'use client';
 
-import { useState } from 'react';
-import section from '@/components/Section/Section';
+import { useState, useEffect } from 'react';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useDebounce } from 'use-debounce';
+
+import Section from '@/components/Section/Section';
 import Container from '@/components/Container/Container';
 import LoadMoreButton from '@/components/LoadMoreBtn/LoadMoreBtn';
 import Loader from '@/components/Loader/Loader';
+import Filters from '@/components/Filters/Filters';
+import RecipesList from '@/components/RecipesList/RecipesList';
+import NoRecipes from '@/components/NoRecipes/NoRecipes';
 
-import SaveButton from '@/components/Auth/SaveButton';
+import {
+  fetchRecipes,
+  FetchRecipesResponse,
+  fetchCategories,
+  fetchIngredients,
+} from '@/lib/clientApi';
+import { ServerRecipe } from '@/types/serverRecipe';
+
+import { Category } from '@/types/category';
+import { Ingredient } from '@/types/indredient';
+
+// не знакодить імпорт, в components не знайшла файл
+// import SaveButton from '@/components/Auth/SaveButton';
 import Hero from '@/components/Hero/Hero';
 import { searchRecipes } from '@/src/api/recipes';
-import Filters from '@/components/Filters/Filters';
 import EmptySearch from '@/components/EmptySearch/EmptySearch';
+
+import toast from 'react-hot-toast';
+
+const PER_PAGE = 12;
 
 import css from './page.module.css';
 
 type Recipe = any;
 const Home = () => {
+  const [page, setPage] = useState<number>(1);
+  const [search, setSearch] = useState<string>('');
+  const [category, setCategory] = useState<string>('');
+  const [ingredient, setIngredient] = useState<string>('');
+
+  const [recipes, setRecipes] = useState<ServerRecipe[]>([]);
+
+  const [debounceSearchQuery] = useDebounce(search, 300);
+
   const [loading, setLoading] = useState<boolean>(false);
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [filters, setFilters] = useState<any>({
     // приклад
     // category:
     // time:
   });
-  const [toast, setToast] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   // const [isEmpty, setIsEmpty] = useState(false);
   const [query, setQuery] = useState('');
-  // console.log('QUERY STATE:', query);
   const [hasSearched, setHasSearched] = useState(false);
-  const handleLoadMoreRecipes = async (): Promise<void> => {
-    setLoading(true);
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('Recipes loaded successfully!');
-    } catch (error) {
-      console.error('Error loading recipes:', error);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    setPage(1);
+    setRecipes([]);
+  }, [debounceSearchQuery, category, ingredient]);
+
+  const { data, isLoading, isFetching, isError } = useQuery<FetchRecipesResponse>({
+    queryKey: ['recipes', page, debounceSearchQuery, category, ingredient],
+    queryFn: () =>
+      fetchRecipes({
+        page,
+        perPage: PER_PAGE,
+        search: debounceSearchQuery || undefined,
+        category: category || undefined,
+        ingredient: ingredient || undefined,
+      }),
+    placeholderData: keepPreviousData,
+  });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error('Something went wrong. Please try again later.');
     }
+  }, [isError]);
+
+  const { data: categories } = useQuery<Category[]>({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+    staleTime: Infinity,
+  });
+
+  const { data: ingredients } = useQuery<Ingredient[]>({
+    queryKey: ['ingredients'],
+    queryFn: fetchIngredients,
+    staleTime: Infinity,
+  });
+
+  const recipesCount = data?.totalRecipes ?? 0;
+
+  useEffect(() => {
+    if (!data) return;
+
+    setRecipes((prev) => (page === 1 ? data.recipes : [...prev, ...data.recipes]));
+  }, [data, page]);
+
+  const handleResetFilters = () => {
+    setCategory('');
+    setIngredient('');
+    setSearch('');
   };
+
+  const handleLoadMoreRecipes = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+  // const handleLoadMoreRecipes = async (): Promise<void> => {
+  //     setLoading(true);
+
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 1000));
+  //     console.log('Recipes loaded successfully!');
+  //   } catch (error) {
+  //     console.error('Error loading recipes:', error);
+  //   } finally {
+  //     setLoading(false)
+  //   };
 
   const handleSearch = async (value: string) => {
     const q = value.trim();
@@ -51,12 +132,12 @@ const Home = () => {
 
     setQuery(q);
     if (q.length < 2) {
-      setToast('Enter at least two characters');
+      setToastMessage('Enter at least two characters');
       return;
     }
     try {
       setLoading(true);
-      setToast(null);
+      setToastMessage(null);
 
       const data = await searchRecipes({
         query: q,
@@ -72,7 +153,7 @@ const Home = () => {
       if (results.length === 0) {
         setRecipes([]);
         //       setIsEmpty(true);
-        setToast(`No recipes found for "${q}"`);
+        setToastMessage(`No recipes found for "${q}"`);
         return;
       }
 
@@ -81,7 +162,7 @@ const Home = () => {
       //     setIsEmpty(false);
     } catch (error) {
       setRecipes([]);
-      setToast('Request error');
+      setToastMessage('Request error');
       //     setIsEmpty(true);
       //
     } finally {
@@ -94,33 +175,43 @@ const Home = () => {
     setQuery('');
     setFilters({});
     setHasSearched(false);
-    setToast(null);
+    setToastMessage(null);
   };
+
+  const hasNextPage = data ? page < data.totalPages : false;
+
+  const isLoadingMore = isFetching && page > 1;
 
   return (
     <main>
-      {/* main version */}
-      {/* <Section>
-        {loading && <Loader />}
-        <Container>
-          <h2>Demo Save</h2>
-          <SaveButton />
-        </Container>
-        <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={loading} />
-      </Section> */}
-      {/* main version */}
-      <section>
-        {/* <Container> */}
+      <Section>
         <Hero onSearch={handleSearch} loading={loading} />
-        {/* </Container> */}
-      </section>
+      </Section>
       {hasSearched && (
         <section className={css.resultSection}>
           <Container>
-            <div className={css.resultsHeader}>
-              <h2 className={css.resultsTitle}>Search Results for "{query}"</h2>
-              <span className={css.resultsCount}>{recipes.length} recipes</span>
-            </div>
+            {/* <div className={css.resultsHeader}> */}
+            <h2 className={css.resultsTitle}>Search Results for "{query}"</h2>
+            {/* <span className={css.resultsCount}>{recipes.length} recipes</span> */}
+            {/* </div> */}
+            {categories && ingredients && (
+              <Filters
+                recipesCount={recipesCount}
+                categories={categories}
+                ingredients={ingredients}
+                selectedCategory={category}
+                selectedIngredient={ingredient}
+                onCategoryChange={(value) => {
+                  setCategory(value);
+                  setPage(1);
+                }}
+                onIngredientChange={(value) => {
+                  setIngredient(value);
+                  setPage(1);
+                }}
+                onResetFilters={handleResetFilters}
+              />
+            )}
 
             {recipes.length > 0 ? (
               <div className={css.resultNotFound}>
@@ -131,20 +222,55 @@ const Home = () => {
 ) : (
   <EmptySearch onReset={handleReset} />
 )} */}
-                {recipes.map((recipe: any, index) => (
-                  <div key={index}>{recipe.title}</div>
-                ))}
+                {/* {recipes.map((recipe: any, index) => (
+                  <div key={index}>{recipe.title}
+                  </div>
+                ))} */}
               </div>
             ) : (
               <EmptySearch onReset={handleReset} />
             )}
           </Container>
-          <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={loading} />
+          {/* <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={loading} /> */}
         </section>
       )}
-      {loading && <Loader />}
+      <Section>
+        <Container>
+          <div className={css.home}>
+            {categories && ingredients && (
+              <Filters
+                recipesCount={recipesCount}
+                categories={categories}
+                ingredients={ingredients}
+                selectedCategory={category}
+                selectedIngredient={ingredient}
+                onCategoryChange={(value) => {
+                  setCategory(value);
+                  setPage(1);
+                }}
+                onIngredientChange={(value) => {
+                  setIngredient(value);
+                  setPage(1);
+                }}
+                onResetFilters={handleResetFilters}
+              />
+            )}
 
-      {toast && <div className="toast">{toast}</div>}
+            {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
+
+            {isLoading && <Loader />}
+
+            {!isLoading && recipes.length === 0 && <NoRecipes />}
+
+            {recipes.length > 0 && <RecipesList recipes={recipes} />}
+
+            {hasNextPage && (
+              <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={isLoadingMore} />
+            )}
+          </div>
+        </Container>
+      </Section>
+      {/* {toastMessage && <div className="toast">{toastMessage}</div>} */}
     </main>
   );
 };

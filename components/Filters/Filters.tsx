@@ -1,49 +1,101 @@
 'use client';
-import css from './Filters.module.css';
 
-type FiltersType = {
-  category?: string;
-  ingredients?: string;
-};
+import { useState } from 'react';
+import styles from './Filters.module.css';
+import Image from 'next/image';
+import FiltersModal from './FiltersModal/FiltersModal';
+import { Category } from '@/types/category';
+import { Ingredient } from '@/types/indredient';
 
-type filtersProps = {
-  filters: FiltersType;
-  setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
-};
+interface FiltersProps {
+  recipesCount: number;
+  categories: Category[];
+  ingredients: Ingredient[];
 
-export default function Filters({ filters, setFilters }: filtersProps) {
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters((prev) => ({
-      ...prev,
-      category: e.target.value,
-    }));
-  };
+  selectedCategory: string;
+  selectedIngredient: string;
 
-  const handleIngredientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters((prev) => ({
-      ...prev,
-      ingredient: e.target.value,
-    }));
-  };
-  const handleReset = () => {
-    setFilters({});
-  };
+  onCategoryChange: (value: string) => void;
+  onIngredientChange: (value: string) => void;
+  onResetFilters: () => void;
+}
+
+const Filters = ({
+  recipesCount,
+  categories,
+  ingredients,
+  selectedCategory,
+  selectedIngredient,
+  onCategoryChange,
+  onIngredientChange,
+  onResetFilters,
+}: FiltersProps) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={css.filters}>
-      <select onChange={handleCategoryChange}>
-        <option value="">Category</option>
-        <option value="beef">Beef</option>
-        <option value="desert">Desert</option>
-      </select>
+    <div className={styles.filters}>
+      <p className={styles.recipesCount}>{recipesCount} recipes</p>
 
-      <select onChange={handleIngredientChange}>
-        <option value="">Ingredient</option>
-        <option value="egg">Egg</option>
-        <option value="milk">Milk</option>
-      </select>
+      {/* mobile/tablet */}
 
-      <button onClick={handleReset}>Reset filters</button>
+      <button type="button" className={styles.mobileFilterButton} onClick={() => setIsOpen(true)}>
+        Filters
+        <Image
+          src="/icons/iconFilter.svg"
+          alt="Filter icon"
+          width={24}
+          height={24}
+          className={styles.filterIcon}
+        />
+      </button>
+
+      {/* Desktop */}
+      <div className={styles.desktopControls}>
+        <button type="button" className={styles.resetButton} onClick={onResetFilters}>
+          Reset filters
+        </button>
+
+        <select
+          className={styles.select}
+          value={selectedCategory}
+          onChange={(e) => onCategoryChange(e.target.value)}
+        >
+          <option value="">Category</option>
+
+          {categories?.map((category) => (
+            <option key={category._id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className={styles.select}
+          value={selectedIngredient}
+          onChange={(e) => onIngredientChange(e.target.value)}
+        >
+          <option value="">Ingredient</option>
+
+          {ingredients?.map((ingredient) => (
+            <option key={ingredient._id} value={ingredient._id}>
+              {ingredient.name}
+            </option>
+          ))}
+        </select>
+      </div>
+      {isOpen && (
+        <FiltersModal
+          categories={categories}
+          ingredients={ingredients}
+          selectedCategory={selectedCategory}
+          selectedIngredient={selectedIngredient}
+          onCategoryChange={onCategoryChange}
+          onIngredientChange={onIngredientChange}
+          onResetFilters={onResetFilters}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </div>
   );
-}
+};
+export default Filters;
