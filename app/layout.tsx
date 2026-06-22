@@ -10,7 +10,9 @@ import { Toaster } from 'react-hot-toast';
 
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+
 import AppInitializer from "@/components/AppInitializer";
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 
 export const metadata = {
   metadataBase: new URL("http://localhost:3000"),
@@ -49,21 +51,17 @@ const dmSans = localFont({
   variable: '--font-heading',
 });
 
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body>
+        <TanStackProvider>
           <AppInitializer />
-
-          <Toaster position="top-right" />
           <Header />
           {children}
           <Footer />
+          <Toaster position="top-right" />
+        </TanStackProvider>
       </body>
     </html>
   );
