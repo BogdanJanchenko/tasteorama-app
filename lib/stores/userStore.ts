@@ -5,7 +5,7 @@ type AuthStore = {
   user: User | null;
   isAuthenticated: boolean;
   setUser: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -13,5 +13,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticated: false,
 
   setUser: (user) => set({ user, isAuthenticated: true }),
-  logout: () => set({ user: null, isAuthenticated: false }),
+
+  logout: async () => {
+    set({ user: null, isAuthenticated: false });
+  },
 }));
