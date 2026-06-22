@@ -58,7 +58,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body>
 <TanStackProvider>
-  <AppInitializer />
   <Header />
   {children}
   <Footer />
