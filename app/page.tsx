@@ -61,8 +61,8 @@
 // export default Home;
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useState, useEffect, useRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
 
 import Section from '@/components/Section/Section';
@@ -96,6 +96,8 @@ const Home = () => {
   const [ingredient, setIngredient] = useState<string>('');
 
   const [recipes, setRecipes] = useState<ServerRecipe[]>([]);
+  const recipesListRef = useRef<HTMLUListElement>(null);
+  const loadMoreScrollIndexRef = useRef<number | null>(null);
 
   const [debounceSearchQuery] = useDebounce(search, 300);
 
@@ -114,7 +116,6 @@ const Home = () => {
         category: category || undefined,
         ingredient: ingredient || undefined,
       }),
-    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {
@@ -138,10 +139,35 @@ const Home = () => {
   const recipesCount = data?.totalRecipes ?? 0;
 
   useEffect(() => {
-    if (!data) return;
+    if (!data?.recipes.length || data.page !== page) return;
 
-    setRecipes((prev) => (page === 1 ? data.recipes : [...prev, ...data.recipes]));
+    setRecipes((prev) => {
+      if (page === 1) {
+        return data.recipes;
+      }
+      return [...prev, ...data.recipes];
+    });
   }, [data, page]);
+
+  useEffect(() => {
+    if (loadMoreScrollIndexRef.current === null) return;
+    if (!recipesListRef.current) return;
+    if (recipes.length <= loadMoreScrollIndexRef.current) return;
+
+    const targetIndex = loadMoreScrollIndexRef.current;
+    const targetElement = recipesListRef.current.children[targetIndex] as HTMLElement | null;
+
+    if (targetElement) {
+      window.requestAnimationFrame(() => {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      });
+    }
+
+    loadMoreScrollIndexRef.current = null;
+  }, [recipes.length]);
 
   const handleResetFilters = () => {
     setCategory('');
@@ -150,6 +176,7 @@ const Home = () => {
   };
 
   const handleLoadMoreRecipes = () => {
+    loadMoreScrollIndexRef.current = recipes.length;
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -180,13 +207,13 @@ const Home = () => {
             />
           )}
 
-          {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
-
-          {isLoading && <Loader />}
+          {isLoading && recipes.length === 0 && <Loader />}
 
           {!isLoading && recipes.length === 0 && <NoRecipes />}
 
-          {recipes.length > 0 && <RecipesList recipes={recipes} />}
+          {recipes.length > 0 && <RecipesList ref={recipesListRef} recipes={recipes} />}
+
+          {isLoadingMore && <Loader />}
 
           {hasNextPage && (
             <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={isLoadingMore} />
@@ -198,4 +225,3 @@ const Home = () => {
 };
 
 export default Home;
-
