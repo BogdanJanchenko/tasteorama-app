@@ -29,21 +29,13 @@ export const register = async ({
   return response.data;
 };
 
-export const getMe = async (): Promise<{ user: User }> => {
-  const response = await nextServer.get('/auth/me', {
-    withCredentials: true,
-  });
-
-  return response.data;
-};
-interface LoginProps {
+export interface LoginProps {
   email: string;
   password: string;
 }
 
-
-export const login = async ({ email, password }: LoginProps): Promise<{ user: User }> => {
-  const response = await nextServer.post('/auth/login', { email, password });
+export const login = async (data: LoginProps): Promise<User> => {
+  const response = await nextServer.post<User>('/auth/login', data);
   return response.data;
 };
 

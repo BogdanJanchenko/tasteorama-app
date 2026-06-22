@@ -11,8 +11,10 @@ import { Toaster } from 'react-hot-toast';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
-import AppInitializer from "@/components/AppInitializer";
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import AppInitializer from '@/components/AppInitializer';
+
+
 
 export const metadata = {
   metadataBase: new URL("http://localhost:3000"),
@@ -55,13 +57,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${montserrat.variable} ${dmSans.variable}`}>
       <body>
-        <TanStackProvider>
-          <AppInitializer />
-          <Header />
-          {children}
-          <Footer />
-          <Toaster position="top-right" />
-        </TanStackProvider>
+<TanStackProvider>
+  <AppInitializer />
+  <Header />
+  {children}
+  <Footer />
+  <Toaster position="top-right" />
+</TanStackProvider>
       </body>
     </html>
   );
