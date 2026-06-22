@@ -14,7 +14,7 @@ function normalizeRecipe(recipe: ServerRecipe) {
     imageUrl: recipe.thumb || '/photos/404-notFound.jpg',
     description: recipe.description,
     category: recipe.category,
-    cookingTime: `${recipe.cookiesTime} min`,
+    cookingTime: `${recipe.time} min`,
     calories: recipe.cals?.toString() || '—',
     ingredients: recipe.ingredients.map(
       ({ ingredient, ingredientAmount }) => `${ingredient} — ${ingredientAmount}`
