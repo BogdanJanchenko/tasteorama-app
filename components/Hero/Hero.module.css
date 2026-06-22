@@ -1,7 +1,9 @@
 .hero {
   position: relative;
   width: 100%;
-  min-height: 443px;
+  justify-content: space-between;
+  max-width: 393px;
+  max-height: 587px;
   display: flex;
   align-items: center;
 
@@ -52,9 +54,9 @@
   font-size: 14px;
 }
 
-@media (max-width: 768px) {
+@media screen and (min-width: 768px) {
   .hero {
-    height: 420px;
+    max-width: 768px;
   }
 
   .heroContent {
@@ -62,5 +64,12 @@
   }
   .hero h1 {
     font-size: 36px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .hero {
+    max-width: 1440;
+    min-height: 443px;
   }
 }

@@ -38,8 +38,22 @@
   color: #000000;
   padding-bottom: 48px;
 }
-.resuilCount {
+.resultCount {
 }
 .resultNotFound {
+  max-width: 361px;
   padding-bottom: 48px;
+}
+
+@media screen and (min-width: 768px) {
+  .resultNotFound {
+    max-width: 704px;
+    padding-bottom: 48px;
+  }
+}
+@media screen and (min-width: 1440px) {
+  .resultNotFound {
+    max-width: 1225px;
+    padding-bottom: 48px;
+  }
 }

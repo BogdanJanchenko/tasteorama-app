@@ -37,21 +37,24 @@ export default function SearchBox({ onSearch, loading }: PropsSearchBox) {
 
   return (
     <form className={css.searchBox} onSubmit={handleSubmit}>
-      <input
-        className={css.searchBoxInput}
-        type="text"
-        placeholder="Search recipes"
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-          setError(null);
-        }}
-      />
+      <div>
+        <input
+          // className={`&{css.searchBoxInput} $ {error ? css.errorInput : ''}`}
+          className={css.searchBoxInput}
+          type="text"
+          placeholder="Search recipes"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setError(null);
+          }}
+        />
+        {error && <div className={css.error}>{error}</div>}
+      </div>
 
       <button className={css.searchBoxButton} type="submit" disabled={loading}>
         Search
       </button>
-      {error && <div className={css.error}>{error}</div>}
     </form>
   );
 }
