@@ -12,7 +12,7 @@ function normalizeRecipe(recipe: ServerRecipe) {
     _id: recipe._id,
     title: recipe.title,
     imageUrl: recipe.thumb || '/photos/404-notFound.jpg',
-    description: recipe.decr,
+    description: recipe.description,
     category: recipe.category,
     cookingTime: `${recipe.cookiesTime} min`,
     calories: recipe.cals?.toString() || '—',
