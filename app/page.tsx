@@ -93,8 +93,8 @@ const Home = () => {
     staleTime: Infinity,
   });
 
-  const recipesCount = data?.totalRecipes ?? 0;
-
+  // const recipesCount = data?.totalRecipes ?? 0;
+const recipesCount = hasSearched ? recipes.length : (data?.totalRecipes ?? 0);
   useEffect(() => {
     if (!data) return;
 
