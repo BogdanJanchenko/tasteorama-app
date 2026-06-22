@@ -213,6 +213,8 @@ const Home = () => {
 
           {recipes.length > 0 && <RecipesList ref={recipesListRef} recipes={recipes} />}
 
+          {isLoadingMore && <Loader />}
+
           {hasNextPage && (
             <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={isLoadingMore} />
           )}
