@@ -6,7 +6,7 @@ import LoadMoreButton from '@/components/LoadMoreBtn/LoadMoreBtn';
 import { useState } from 'react';
 import Loader from '@/components/Loader/Loader';
 
-import SaveButton from '@/components/Auth/SaveButton';
+import SaveButton from '@/components/SaveButton/SaveButton';
 
 const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,3 +36,4 @@ const Home = () => {
 };
 
 export default Home;
+
