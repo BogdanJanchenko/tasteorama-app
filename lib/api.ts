@@ -5,14 +5,8 @@ export const nextServer = axios.create({
   withCredentials: true,
 });
 
-nextServer.interceptors.response.use(
-  (res) => res,
-  (error) => {
-    const message =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      "Something went wrong";
+export const directServer = axios.create({
+  baseURL: 'https://tasteorama-server.onrender.com',
+});
 
-    return Promise.reject(new Error(message));
-  }
-);
+

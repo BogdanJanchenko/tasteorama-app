@@ -3,6 +3,7 @@ import { nextServer } from './api';
 import { User } from '@/types/user';
 import { Category } from '@/types/category';
 import { Ingredient } from '@/types/indredient';
+import { directServer } from './api';
 
 // ------------------------------------------------
 // Auth API
@@ -64,7 +65,7 @@ export const refresh = async (): Promise<MessageResponse> => {
 // ------------------------------------------------
 
 export const fetchCategories = async (): Promise<Category[]> => {
-  const response = await nextServer.get<Category[]>('/api/categories');
+  const response = await directServer.get<Category[]>('/api/categories');
   return response.data;
 };
 
@@ -73,7 +74,7 @@ export const fetchCategories = async (): Promise<Category[]> => {
 // ------------------------------------------------
 
 export const fetchIngredients = async (): Promise<Ingredient[]> => {
-  const response = await nextServer.get<Ingredient[]>('/api/ingredients');
+  const response = await directServer.get<Ingredient[]>('/api/ingredients');
   return response.data;
 };
 
@@ -104,7 +105,7 @@ export const fetchRecipes = async ({
   category,
   ingredient,
 }: FetchRecipesParams): Promise<FetchRecipesResponse> => {
-  const response = await nextServer.get<FetchRecipesResponse>('/api/recipes', {
+  const response = await directServer.get<FetchRecipesResponse>('/api/recipes', {
     params: {
       page,
       perPage,
@@ -117,6 +118,6 @@ export const fetchRecipes = async ({
 };
 
 export const fetchRecipeById = async (recipeId: string): Promise<ServerRecipe> => {
-  const response = await nextServer.get<ServerRecipe>(`/api/recipes/${recipeId}`);
+  const response = await directServer.get<ServerRecipe>(`/api/recipes/${recipeId}`);
   return response.data;
 };
