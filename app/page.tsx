@@ -194,25 +194,6 @@ const Home = () => {
             <h2 className={css.resultsTitle}>Search Results for "{query}"</h2>
             {/* <span className={css.resultsCount}>{recipes.length} recipes</span> */}
             {/* </div> */}
-            {categories && ingredients && (
-              <Filters
-                recipesCount={recipesCount}
-                categories={categories}
-                ingredients={ingredients}
-                selectedCategory={category}
-                selectedIngredient={ingredient}
-                onCategoryChange={(value) => {
-                  setCategory(value);
-                  setPage(1);
-                }}
-                onIngredientChange={(value) => {
-                  setIngredient(value);
-                  setPage(1);
-                }}
-                onResetFilters={handleResetFilters}
-              />
-            )}
-
             {recipes.length > 0 ? (
               <div className={css.resultNotFound}>
                 {/* <Filters /> */}
