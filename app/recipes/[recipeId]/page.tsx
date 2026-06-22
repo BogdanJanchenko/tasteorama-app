@@ -10,7 +10,7 @@ interface RecipePageProps {
 function normalizeRecipe(recipe: ServerRecipe) {
   return {
     _id: recipe._id,
-    title: recipe.name,
+    title: recipe.title,
     imageUrl: recipe.recipeImg || '/photos/404-notFound.jpg',
     description: recipe.decr,
     category: recipe.category,
