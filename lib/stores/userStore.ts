@@ -1,7 +1,6 @@
 import { create } from 'zustand';
-import { getMe } from "@/lib/clientApi";
+// import { getMe } from '@/lib/clientApi';
 import { User } from '@/types/user';
-
 
 type AuthStore = {
   user: User | null;
@@ -10,7 +9,7 @@ type AuthStore = {
   setUser: (user: User) => void;
   logout: () => void;
 
-   initUser: () => Promise<void>; 
+  initUser: () => Promise<void>;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -21,7 +20,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   logout: () => set({ user: null, isAuthenticated: false }),
 
-   initUser: async () => {
+  initUser: async () => {
     try {
       const data = await getMe();
       set({
