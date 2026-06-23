@@ -8,6 +8,9 @@ export async function GET() {
   try {
     const cookieStore = await cookies();
 
+    console.log('USER ROUTE COOKIES', cookieStore.getAll());
+    console.log('USER ROUTE STRING', cookieStore.toString());
+
     const res = await api.get('/api/recipes/user', {
       headers: {
         Cookie: cookieStore.toString(),

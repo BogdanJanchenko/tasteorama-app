@@ -10,11 +10,7 @@ interface Props {
 }
 
 export default function ProfileRecipes({ recipesType }: Props) {
-  const {
-    data: recipes,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: [recipesType],
     queryFn: recipesType === 'own' ? fetchUserRecipes : fetchFavoriteRecipes,
   });
@@ -27,5 +23,5 @@ export default function ProfileRecipes({ recipesType }: Props) {
     return <div>Error loading recipes.</div>;
   }
 
-  return <RecipesList recipes={recipes ?? []} />;
+  return <RecipesList recipes={data?.recipes ?? []} />;
 }
