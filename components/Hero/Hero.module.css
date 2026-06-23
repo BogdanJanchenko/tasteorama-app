@@ -10,7 +10,7 @@
   padding: 128px 108px 128px 108px;
   gap: 24px;
 
-  background: url('/photos/hero-img.jpg') center/cover no-repeat;
+  background: url('/photos/hero-img.jpg') center -130px/cover no-repeat;
   /* background-size: cover;
   background-position: center;
   background-repeat: no-repeat; */
@@ -47,7 +47,7 @@
   z-index: 3;
 
   margin-top: 12px;
-  padding: 10px 14px;
+  /* padding: 10px 14px; */
 
   background: rgba(225, 225, 225, 0.9);
   color: #000;
@@ -59,9 +59,9 @@
     max-width: 768px;
   } */
 
-  .heroContent {
+  /* .heroContent {
     padding: 0 20px;
-  }
+  } */
   .hero h1 {
     font-size: 36px;
   }
