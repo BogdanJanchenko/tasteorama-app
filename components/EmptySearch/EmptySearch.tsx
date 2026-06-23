@@ -10,7 +10,7 @@ export default function EmptySearch({ onReset }: emptySearchProps) {
         <h3>
           We&apos;re sorry! We were not able <br /> to find a match.
         </h3>
-        <button onClick={onReset}>Reset serach and filters</button>
+        <button onClick={onReset}>Reset search and filters</button>
       </div>
     </div>
   );
