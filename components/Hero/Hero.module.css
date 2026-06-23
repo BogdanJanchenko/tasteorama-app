@@ -3,11 +3,11 @@
   width: 100%;
   justify-content: space-between;
   /* max-width: 393px; */
-  max-height: 587px;
+  height: 587px;
   display: flex;
   align-items: center;
 
-  padding: 128px 108px 128px 108px;
+  padding: 108px 32px;
   gap: 24px;
 
   background: url('/photos/hero-img.jpg') center -130px/cover no-repeat;
