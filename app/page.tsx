@@ -11,6 +11,7 @@ import Filters from '@/components/Filters/Filters';
 import RecipesList from '@/components/RecipesList/RecipesList';
 import NoRecipes from '@/components/NoRecipes/NoRecipes';
 import Pagination from '@/components/Pagination/Pagination';
+import Hero from '@/components/Hero/Hero';
 
 import {
   fetchRecipes,
@@ -81,40 +82,43 @@ const Home = () => {
   };
 
   return (
-    <Section>
-      <Container>
-        <div className={css.home}>
-          {categories && ingredients && (
-            <Filters
-              recipesCount={recipesCount}
-              categories={categories}
-              ingredients={ingredients}
-              selectedCategory={category}
-              selectedIngredient={ingredient}
-              onCategoryChange={(value) => {
-                setCategory(value);
-                setPage(1);
-              }}
-              onIngredientChange={(value) => {
-                setIngredient(value);
-                setPage(1);
-              }}
-              onResetFilters={handleResetFilters}
-            />
-          )}
+    <>
+      <Hero onSearch={(query) => setSearch(query)} />
+      <Section>
+        <Container>
+          <div className={css.home}>
+            {categories && ingredients && (
+              <Filters
+                recipesCount={recipesCount}
+                categories={categories}
+                ingredients={ingredients}
+                selectedCategory={category}
+                selectedIngredient={ingredient}
+                onCategoryChange={(value) => {
+                  setCategory(value);
+                  setPage(1);
+                }}
+                onIngredientChange={(value) => {
+                  setIngredient(value);
+                  setPage(1);
+                }}
+                onResetFilters={handleResetFilters}
+              />
+            )}
 
-          {isLoading && <Loader />}
+            {isLoading && <Loader />}
 
-          {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
+            {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
 
-          {!isLoading && recipes.length === 0 && <NoRecipes />}
+            {!isLoading && recipes.length === 0 && <NoRecipes />}
 
-          {totalPages > 1 && (
-            <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
-          )}
-        </div>
-      </Container>
-    </Section>
+            {totalPages > 1 && (
+              <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+            )}
+          </div>
+        </Container>
+      </Section>
+    </>
   );
 };
 
