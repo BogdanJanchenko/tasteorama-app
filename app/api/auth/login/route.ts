@@ -16,16 +16,25 @@ export async function POST(req: NextRequest) {
 
     if (setCookie) {
       const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+
+      const skipKeys = new Set(['expires', 'max-age', 'path', 'httponly', 'secure', 'samesite', 'domain']);
+
       for (const cookieStr of cookieArray) {
         const parsed = parse(cookieStr);
 
         const options = {
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-          path: parsed.Path,
-          maxAge: Number(parsed['Max-Age']),
+          path: parsed.Path || '/',
+          ...(maxAge !== undefined && { maxAge }),
         };
-        if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
-        if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
+
+        // Зберігаємо ВСІ куки від бекенду (PHPSESSID, accessToken, refreshToken тощо)
+        for (const [key, value] of Object.entries(parsed)) {
+          if (!skipKeys.has(key.toLowerCase()) && value) {
+            console.log(`[LOGIN] saving cookie: ${key}=${String(value).slice(0, 20)}...`);
+            cookieStore.set(key, String(value), options);
+          }
+        }
       }
 
       return NextResponse.json(apiRes.data, { status: apiRes.status });

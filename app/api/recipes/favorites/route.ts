@@ -1,22 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { api } from '../api';
+import { NextResponse } from 'next/server';
+import { api } from '../../api';
 import { cookies } from 'next/headers';
+import { logErrorResponse } from '../../_utils/utils';
 import { isAxiosError } from 'axios';
-import { logErrorResponse } from '../_utils/utils';
 
-export async function POST(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies();
 
-    const body = await request.json();
-
-    const res = await api.post('/api/recipes', body, {
+    const res = await api.get('/api/recipes/favorites', {
       headers: {
         Cookie: cookieStore.toString(),
-        'Content-Type': 'application/json',
       },
     });
-
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {
