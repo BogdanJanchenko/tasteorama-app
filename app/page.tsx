@@ -1,64 +1,3 @@
-// 'use client';
-
-// import Section from '@/components/Section/Section';
-// import Container from '@/components/Container/Container';
-
-// import LoadMoreButton from '@/components/LoadMoreBtn/LoadMoreBtn';
-// import Loader from '@/components/Loader/Loader';
-// import SaveButton from '@/components/Auth/SaveButton';
-
-// import { useState, useEffect } from 'react';
-// import { useQuery, keepPreviousData } from '@tanstack/react-query';
-// import { useDebounce } from 'use-debounce';
-
-// import { fetchRecipes } from '@/lib/clientApi';
-
-// import toast from 'react-hot-toast';
-
-// const Home = () => {
-//   const [page, setPage] = useState<number>(1);
-//   const [search, setSearch] = useState<string>('');
-//   const [category, setCategory] = useState<string>('');
-//   const [ingredient, setIngredient] = useState<string>('');
-//   const [loading, setLoading] = useState<boolean>(false);
-
-//   const [debounceSearchQuery] = useDebounce(search, 300);
-
-//   const { data, isError, error } = useQuery({
-//     queryKey: ['notes', page, debounceSearchQuery, category, ingredient],
-//     queryFn: () =>
-//       fetchRecipes({
-//         page: page,
-//         perPage: 12,
-//         search: debounceSearchQuery,
-//         category: category,
-//         ingredient: ingredient,
-//       }),
-//     placeholderData: keepPreviousData,
-//   });
-
-//   useEffect(() => {
-//     if (isError && error) {
-//       toast.error(`Oops, something went wrong while get the note.`);
-//       console.log(`Something went wrong while get the note: ${error}`);
-//     }
-//   }, [isError, error]);
-
-//   useEffect(() => {
-//     setPage(1);
-//   }, [search, category, ingredient]);
-
-//   return (
-//     <Section>
-//       <Container>
-//         <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={loading} />
-//         {loading && <Loader />}
-//       </Container>
-//     </Section>
-//   );
-// };
-
-// export default Home;
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -67,11 +6,11 @@ import { useDebounce } from 'use-debounce';
 
 import Section from '@/components/Section/Section';
 import Container from '@/components/Container/Container';
-import LoadMoreButton from '@/components/LoadMoreBtn/LoadMoreBtn';
 import Loader from '@/components/Loader/Loader';
 import Filters from '@/components/Filters/Filters';
 import RecipesList from '@/components/RecipesList/RecipesList';
 import NoRecipes from '@/components/NoRecipes/NoRecipes';
+import Pagination from '@/components/Pagination/Pagination';
 
 import {
   fetchRecipes,
@@ -79,7 +18,6 @@ import {
   fetchCategories,
   fetchIngredients,
 } from '@/lib/clientApi';
-import { ServerRecipe } from '@/types/serverRecipe';
 
 import { Category } from '@/types/category';
 import { Ingredient } from '@/types/indredient';
@@ -95,16 +33,13 @@ const Home = () => {
   const [category, setCategory] = useState<string>('');
   const [ingredient, setIngredient] = useState<string>('');
 
-  const [recipes, setRecipes] = useState<ServerRecipe[]>([]);
-
   const [debounceSearchQuery] = useDebounce(search, 300);
 
   useEffect(() => {
     setPage(1);
-    setRecipes([]);
   }, [debounceSearchQuery, category, ingredient]);
 
-  const { data, isLoading, isFetching, isError } = useQuery<FetchRecipesResponse>({
+  const { data, isLoading, isError } = useQuery<FetchRecipesResponse>({
     queryKey: ['recipes', page, debounceSearchQuery, category, ingredient],
     queryFn: () =>
       fetchRecipes({
@@ -116,6 +51,10 @@ const Home = () => {
       }),
     placeholderData: keepPreviousData,
   });
+
+  const totalPages = data?.totalPages ?? 1;
+  const recipesCount = data?.totalRecipes ?? 0;
+  const recipes = data?.recipes ?? [];
 
   useEffect(() => {
     if (isError) {
@@ -135,27 +74,11 @@ const Home = () => {
     staleTime: Infinity,
   });
 
-  const recipesCount = data?.totalRecipes ?? 0;
-
-  useEffect(() => {
-    if (!data) return;
-
-    setRecipes((prev) => (page === 1 ? data.recipes : [...prev, ...data.recipes]));
-  }, [data, page]);
-
   const handleResetFilters = () => {
     setCategory('');
     setIngredient('');
     setSearch('');
   };
-
-  const handleLoadMoreRecipes = () => {
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  const hasNextPage = data ? page < data.totalPages : false;
-
-  const isLoadingMore = isFetching && page > 1;
 
   return (
     <Section>
@@ -180,16 +103,14 @@ const Home = () => {
             />
           )}
 
-          {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
-
           {isLoading && <Loader />}
+
+          {!isLoading && recipes.length > 0 && <RecipesList recipes={recipes} />}
 
           {!isLoading && recipes.length === 0 && <NoRecipes />}
 
-          {recipes.length > 0 && <RecipesList recipes={recipes} />}
-
-          {hasNextPage && (
-            <LoadMoreButton onLoadMore={handleLoadMoreRecipes} isLoading={isLoadingMore} />
+          {totalPages > 1 && (
+            <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
           )}
         </div>
       </Container>
@@ -198,4 +119,3 @@ const Home = () => {
 };
 
 export default Home;
-
