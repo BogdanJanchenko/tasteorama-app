@@ -36,7 +36,14 @@ const Login = () => {
     },
     onError: (error: AxiosError<{ error?: string }>) => {
       const errorMessage = error.response?.data?.error ?? error.message ?? 'Oops... some error';
-      toast.error(errorMessage, { id: 'login-error' });
+      const status = error.response?.status;
+
+      if (status === 401) {
+        toast.error('Login failed, invalide user');
+      } else {
+        toast.error(error.response?.data?.error ?? error.message ?? 'Login failed');
+        toast.error(errorMessage, { id: 'login-error' });
+      }
     },
   });
 
