@@ -35,7 +35,7 @@ export interface LoginProps {
 }
 
 export const login = async (data: LoginProps): Promise<User> => {
-  const response = await nextServer.post<User>('/auth/login', data);
+  const response = await nextServer.post<User>('/api/auth/login', data);
   return response.data;
 };
 
@@ -112,4 +112,14 @@ export const fetchRecipes = async ({
 export const fetchRecipeById = async (recipeId: string): Promise<ServerRecipe> => {
   const response = await directServer.get<{ recipe: ServerRecipe }>(`/api/recipes/${recipeId}`);
   return response.data.recipe;
+};
+
+export const fetchUserRecipes = async () => {
+  const response = await nextServer.get('/api/recipes/user');
+  return response.data;
+};
+
+export const fetchFavoriteRecipes = async () => {
+  const response = await nextServer.get('/api/recipes/favorites');
+  return response.data;
 };
