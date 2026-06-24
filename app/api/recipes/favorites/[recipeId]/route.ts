@@ -13,7 +13,7 @@ export async function POST(
     const cookieStore = await cookies();
 
     const res = await api.post(
-      `api/recipes/favorites/${recipeId}`,
+      `/api/recipes/favorites/${recipeId}`,
       {},
       {
         headers: {
@@ -44,7 +44,7 @@ export async function DELETE(
     const { recipeId } = await params;
     const cookieStore = await cookies();
 
-    const res = await api.delete(`api/recipes/favorites/${recipeId}`, {
+    const res = await api.delete(`/api/recipes/favorites/${recipeId}`, {
       headers: {
         Cookie: cookieStore.toString(),
       },

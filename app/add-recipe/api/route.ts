@@ -33,12 +33,17 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(res.data, { status: res.status });
-  } catch (error: any) {
-    console.error('❌ ПОМИЛКА БЕКЕНДУ:', error.response?.data || error.message);
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error('❌ ПОМИЛКА БЕКЕНДУ:', error.response?.data || error.message);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.response?.status || 500 }
+      );
+    }
 
-    return NextResponse.json(
-      { error: error.message, response: error.response?.data },
-      { status: error.response?.status || 500 }
-    );
+    const message = error instanceof Error ? error.message : 'Internal Server Error';
+    console.error('❌ ПОМИЛКА БЕКЕНДУ:', message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

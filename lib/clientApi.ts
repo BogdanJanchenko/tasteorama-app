@@ -20,7 +20,7 @@ export const register = async ({
   email,
   password,
 }: RegisterProps): Promise<{ user: User }> => {
-  const response = await nextServer.post('auth/register', {
+  const response = await nextServer.post('/api/auth/register', {
     name,
     email,
     password,
@@ -34,14 +34,25 @@ export interface LoginProps {
   password: string;
 }
 
-export const login = async (data: LoginProps): Promise<{ user: User }> => {
-  const response = await nextServer.post<{ user: User }>('auth/login', data);
+export const login = async (data: LoginProps): Promise<{ user?: User }> => {
+  const response = await nextServer.post<{ user?: User }>('/api/auth/login', data);
 
   return response.data;
 };
 
+export const fetchCurrentUserClient = async (): Promise<User | null> => {
+  const response = await nextServer.get('/api/me');
+  const data = response.data as { user?: User } | User | null;
+
+  if (!data) return null;
+  if (typeof data === 'object' && 'user' in data && data.user) return data.user;
+  if (typeof data === 'object' && '_id' in data) return data as User;
+
+  return null;
+};
+
 export const logout = async (): Promise<void> => {
-  await nextServer.post('auth/logout');
+  await nextServer.post('/api/auth/logout');
 };
 
 export interface MessageResponse {
@@ -49,7 +60,7 @@ export interface MessageResponse {
 }
 
 export const refresh = async (): Promise<MessageResponse> => {
-  const response = await nextServer.post<MessageResponse>('auth/refresh');
+  const response = await nextServer.post<MessageResponse>('/api/auth/refresh');
   return response.data;
 };
 

@@ -9,12 +9,22 @@ import { isAxiosError } from 'axios';
 export async function GET() {
   try {
     const cookieStore = await cookies();
+    const headers = {
+      Cookie: cookieStore.toString(),
+    };
 
-    const res = await api.get('/me', {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    });
+    let res;
+    try {
+      res = await api.get('/api/auth/me', { headers });
+    } catch (primaryError) {
+      if (!isAxiosError(primaryError)) {
+        throw primaryError;
+      }
+
+      // Backward compatibility for backend branches where the endpoint is mounted as /me.
+      res = await api.get('/me', { headers });
+    }
+
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {

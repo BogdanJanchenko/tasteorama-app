@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { useId, useState } from 'react';
 import css from './LoginForm.module.css';
 import { useRouter } from 'next/navigation';
-import { login } from '@/lib/clientApi';
+import { fetchCurrentUserClient, login } from '@/lib/clientApi';
 import { useAuthStore } from '../../../lib/stores/userStore';
 
 import { LoginProps } from '@/lib/clientApi';
@@ -22,17 +22,18 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: (res) => {
-      if (res.user._id) {
-        localStorage.setItem('userId', res.user._id);
+    onSuccess: async (res) => {
+      const user = res.user ?? (await fetchCurrentUserClient());
+
+      if (!user?._id) {
+        toast.error('Login succeeded, but user data was not received. Please reload the page.');
+        return;
       }
 
-      setUser(res.user);
+      localStorage.setItem('userId', user._id);
+      setUser(user);
 
       toast.success('Login successful!');
-      console.log('BEFORE PUSH');
-      router.push('/');
-      console.log('AFTER PUSH');
       router.push('/');
     },
     onError: (error: AxiosError<{ error?: string }>) => {
@@ -72,6 +73,7 @@ const Login = () => {
                   id={`${fieldId}-email`}
                   name="email"
                   type="email"
+                  autoComplete="email"
                   placeholder="email@gmail.com"
                   className={css.input}
                 />
@@ -87,6 +89,7 @@ const Login = () => {
                     id={`${fieldId}-password`}
                     name="password"
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
                     placeholder="*********"
                     className={css.input}
                   />

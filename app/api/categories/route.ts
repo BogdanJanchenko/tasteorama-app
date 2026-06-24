@@ -5,7 +5,7 @@ import { logErrorResponse } from '../_utils/utils';
 
 export async function GET() {
   try {
-    const res = await api.get('/categories');
+    const res = await api.get('/api/categories');
     return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
     if (isAxiosError(error)) {

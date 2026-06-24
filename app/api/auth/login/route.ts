@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const apiRes = await api.post('/auth/login', body);
+    const apiRes = await api.post('/api/auth/login', body);
 
     const cookieStore = await cookies();
     const setCookie = apiRes.headers['set-cookie'];
@@ -17,10 +17,19 @@ export async function POST(req: NextRequest) {
     if (setCookie) {
       const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
 
-      const skipKeys = new Set(['expires', 'max-age', 'path', 'httponly', 'secure', 'samesite', 'domain']);
+      const skipKeys = new Set([
+        'expires',
+        'max-age',
+        'path',
+        'httponly',
+        'secure',
+        'samesite',
+        'domain',
+      ]);
 
       for (const cookieStr of cookieArray) {
         const parsed = parse(cookieStr);
+        const maxAge = parsed['Max-Age'] ? Number(parsed['Max-Age']) : undefined;
 
         const options = {
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,

@@ -12,7 +12,7 @@ export const fetchCurrentUser = async (): Promise<User | null> => {
   try {
     const cookieStore = await cookies();
     if (!cookieStore) return null;
-    const response = await nextServer.get<User>('/me', {
+    const response = await nextServer.get<User>('/api/me', {
       headers: {
         Cookie: cookieStore.toString(),
       },

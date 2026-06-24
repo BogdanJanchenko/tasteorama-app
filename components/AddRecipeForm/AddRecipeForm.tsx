@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
 import axios from 'axios'; // Додали axios для прямого запиту на твій локальний route
+import Image from 'next/image';
 import Loader from '../../components/Loader/Loader';
 import { fetchCategories, fetchIngredients } from '../../lib/clientApi'; // Прибрали addRecipe звідси
 import toast from 'react-hot-toast';
@@ -63,7 +64,7 @@ export default function AddRecipeForm() {
               description: values.decr,
               time: String(values.cookiesTime),
               category: values.category,
-              ingredients: values.ingredient.map(item => ({
+              ingredients: values.ingredient.map((item) => ({
                 ingredient: item.ingredientId,
                 ingredientAmount: item.measure,
               })),
@@ -74,8 +75,7 @@ export default function AddRecipeForm() {
               payload.cals = Number(values.cals);
             }
 
-            // Викликаємо твій власний ізольований route, який прокине куки
-            await axios.post('/add-recipe/api', payload);
+            await axios.post('/api/recipes', payload);
 
             toast.success('Recipe published successfully! 🎉');
             resetForm();
@@ -115,9 +115,11 @@ export default function AddRecipeForm() {
                   )}
 
                   {values.recipeImg && (
-                    <img
+                    <Image
                       src={URL.createObjectURL(values.recipeImg as File)}
-                      alt="Recipe preview" // TODO: Connect to db
+                      alt="Recipe preview"
+                      fill
+                      unoptimized
                       className={styles.previewImage}
                     />
                   )}
@@ -162,7 +164,11 @@ export default function AddRecipeForm() {
                     placeholder="10"
                     className={`${styles.inputField} ${errors.cookiesTime && touched.cookiesTime ? styles.inputError : ''}`}
                   />
-                  <ErrorMessage name="cookiesTime" component="span" className={styles.errorMessage} />
+                  <ErrorMessage
+                    name="cookiesTime"
+                    component="span"
+                    className={styles.errorMessage}
+                  />
                 </div>
 
                 <div className={styles.rowInputs}>
@@ -179,7 +185,11 @@ export default function AddRecipeForm() {
 
                   <div className={styles.inputGroup}>
                     <label htmlFor="category">Category</label>
-                    <Field name="category" as="select" className={`${styles.selectField} ${errors.category && touched.category ? styles.inputError : ''}`}>
+                    <Field
+                      name="category"
+                      as="select"
+                      className={`${styles.selectField} ${errors.category && touched.category ? styles.inputError : ''}`}
+                    >
                       {isCatsError ? (
                         <option>Error loading categories</option>
                       ) : (
@@ -193,7 +203,11 @@ export default function AddRecipeForm() {
                         </>
                       )}
                     </Field>
-                    <ErrorMessage name="category" component="span" className={styles.errorMessage} />
+                    <ErrorMessage
+                      name="category"
+                      component="span"
+                      className={styles.errorMessage}
+                    />
                   </div>
                 </div>
               </div>
@@ -253,9 +267,15 @@ export default function AddRecipeForm() {
                         Add new Ingredient
                       </button>
 
-                      <ErrorMessage name="ingredient" component="span" className={styles.errorMessage} />
+                      <ErrorMessage
+                        name="ingredient"
+                        component="span"
+                        className={styles.errorMessage}
+                      />
 
-                      <div className={`${styles.addedIngredientsContainer} ${values.ingredient.length === 0 ? styles.emptyList : ''}`}>
+                      <div
+                        className={`${styles.addedIngredientsContainer} ${values.ingredient.length === 0 ? styles.emptyList : ''}`}
+                      >
                         <div className={styles.addedIngredientsHeader}>
                           <span className={styles.headerName}>Name:</span>
                           <span className={styles.headerAmount}>Amount:</span>
@@ -263,7 +283,8 @@ export default function AddRecipeForm() {
                         </div>
 
                         {values.ingredient.map((item, index) => {
-                          const ingName = ingredients.find(i => i._id === item.ingredientId)?.name || 'Unknown';
+                          const ingName =
+                            ingredients.find((i) => i._id === item.ingredientId)?.name || 'Unknown';
                           return (
                             <div key={index} className={styles.addedIngredientRow}>
                               <span className={styles.rowName}>{ingName}</span>
@@ -273,7 +294,13 @@ export default function AddRecipeForm() {
                                 className={styles.removeIngredientBtn}
                                 onClick={() => remove(index)}
                               >
-                                <svg width="24" height="24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  aria-hidden="true"
+                                >
                                   <use href="/addPageIcons/sprite.svg#icon-delete" />
                                 </svg>
                               </button>
@@ -295,7 +322,11 @@ export default function AddRecipeForm() {
                     placeholder="Enter a text"
                     className={`${styles.instructionField} ${errors.instruction && touched.instruction ? styles.inputError : ''}`}
                   />
-                  <ErrorMessage name="instruction" component="span" className={styles.errorMessage} />
+                  <ErrorMessage
+                    name="instruction"
+                    component="span"
+                    className={styles.errorMessage}
+                  />
                 </div>
               </div>
 
