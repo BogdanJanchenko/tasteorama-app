@@ -116,7 +116,7 @@ export const fetchRecipeById = async (recipeId: string): Promise<ServerRecipe> =
 };
 
 export const addRecipe = async (payload: FormData): Promise<ServerRecipe> => {
-  const response = await nextServer.post<{ recipe: ServerRecipe }>('/api/recipes', payload);
+  const response = await nextServer.post<{ recipe: ServerRecipe }>('/api/add-recipe', payload);
 
   return response.data.recipe;
 };
