@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik';
-import axios from 'axios'; // Додали axios для прямого запиту на твій локальний route
+import axios from 'axios';
 import Loader from '../../components/Loader/Loader';
-import { fetchCategories, fetchIngredients } from '../../lib/clientApi'; // Прибрали addRecipe звідси
+import { fetchCategories, fetchIngredients } from '../../lib/clientApi';
 import toast from 'react-hot-toast';
 import { recipeSchema } from '../../validation/recipeSchema';
 import styles from './AddRecipeForm.module.css';
@@ -74,8 +74,7 @@ export default function AddRecipeForm() {
               payload.cals = Number(values.cals);
             }
 
-            // Викликаємо твій власний ізольований route, який прокине куки
-            await axios.post('/add-recipe/api', payload);
+            await axios.post('/api/add-recipe', payload);
 
             toast.success('Recipe published successfully! 🎉');
             resetForm();
