@@ -44,8 +44,9 @@ function normalizeRecipe(recipe: ServerRecipe) {
     cookingTime: `${recipe.time} min`,
     calories: recipe.cals?.toString() || '—',
     ingredients: recipe.ingredients.map(
-      ({ ingredient, ingredientAmount }) => `${ingredient} — ${ingredientAmount}`
-    ),
+  (item: any) =>
+    `${item.ingredient?.name || item.ingredient} — ${item.ingredientAmount}`
+),
     steps: recipe.instructions
       .split(/\r?\n/)
       .map((line) => line.trim())
