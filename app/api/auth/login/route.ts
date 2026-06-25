@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { api } from '../../api';
 import { cookies } from 'next/headers';
+import { parse } from 'cookie';
 import { isAxiosError } from 'axios';
-import { logErrorResponse, normalizeSessionId } from '../../_utils/utils';
+import { logErrorResponse } from '../../_utils/utils';
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,52 +44,19 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      const maxAgeAttr = attributes.find((attr) =>
-        attr.trim().toLowerCase().startsWith('max-age=')
-      );
-
-      const expiresAttr = attributes.find((attr) =>
-        attr.trim().toLowerCase().startsWith('expires=')
-      );
-
-      cookieStore.set(name, name === 'sessionId' ? normalizeSessionId(value) : value, {
-        httpOnly: true,
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        ...(maxAgeAttr && {
-          maxAge: Number(maxAgeAttr.split('=')[1]),
-        }),
-        ...(expiresAttr && {
-          expires: new Date(expiresAttr.split('=').slice(1).join('=')),
-        }),
-      });
+      return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
 
-    console.log('Cookies after login:', cookieStore.getAll());
-
-    return NextResponse.json(apiRes.data, {
-      status: apiRes.status,
-    });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
-
       return NextResponse.json(
-        {
-          error: error.message,
-          response: error.response?.data,
-        },
-        {
-          status: error.response?.status || 500,
-        }
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
       );
     }
-
-    logErrorResponse({
-      message: (error as Error).message,
-    });
-
+    logErrorResponse({ message: (error as Error).message });
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
