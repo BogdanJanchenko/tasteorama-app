@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       ]);
 
       for (const cookieStr of cookieArray) {
-        const parsed = parse(cookieStr);
+        const parsed = parsed(cookieStr);
         const maxAge = parsed['Max-Age'] ? parseInt(parsed['Max-Age'], 10) : undefined;
         const options = {
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
