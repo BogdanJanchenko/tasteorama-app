@@ -178,3 +178,8 @@ export const removeFavorite = async (recipeId: string) => {
 
   return response.data;
 };
+
+export const fetchCurrentUser = async (): Promise<User> => {
+  const response = await nextServer.get<User>('/api/me');
+  return response.data;
+};
