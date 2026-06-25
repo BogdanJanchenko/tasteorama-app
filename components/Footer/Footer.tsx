@@ -26,7 +26,7 @@ export default function Footer() {
           <nav>
             <ul className={css.navList}>
               <li>
-                <Link href="/recipes" className={css.navLink}>
+                <Link href="/" className={css.navLink}>
                   Recipes
                 </Link>
               </li>

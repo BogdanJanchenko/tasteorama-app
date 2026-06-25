@@ -63,8 +63,8 @@ export default function MobileMenu({ isOpen, onClose, isAuth, user, onLogout }: 
           <ul className={css.linksList}>
             <li>
               <Link
-                href="/recipes"
-                className={pathname === '/recipes' ? css.activeLink : css.link}
+                href="/"
+                className={pathname === '/' ? css.activeLink : css.link}
                 onClick={onClose}
               >
                 Recipes
