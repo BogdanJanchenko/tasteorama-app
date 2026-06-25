@@ -53,11 +53,6 @@ export const refresh = async (): Promise<MessageResponse> => {
   return response.data;
 };
 
-export const fetchCurrentUser = async (): Promise<User> => {
-  const response = await nextServer.get<User>('me');
-  return response.data;
-};
-
 // ------------------------------------------------
 // Categories API
 // ------------------------------------------------
@@ -120,8 +115,8 @@ export const fetchRecipeById = async (recipeId: string): Promise<ServerRecipe> =
   return response.data.recipe;
 };
 
-export const addRecipe = async (payload: any): Promise<ServerRecipe> => {
-  const response = await nextServer.post<{ recipe: ServerRecipe }>('/api/add-recipe', payload);
+export const addRecipe = async (formData: FormData): Promise<ServerRecipe> => {
+  const response = await nextServer.post<{ recipe: ServerRecipe }>('/api/add-recipe', formData);
 
   return response.data.recipe;
 };
