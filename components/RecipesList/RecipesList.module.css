@@ -7,7 +7,7 @@
 
   margin: 0;
   padding: 0;
-
+  max-width: 361px;
   list-style: none;
 }
 
@@ -19,6 +19,7 @@
   .list {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+    max-width: 704px;
   }
 
   .profileList {
