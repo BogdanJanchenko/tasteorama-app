@@ -35,13 +35,13 @@ export interface LoginProps {
 }
 
 export const login = async (data: LoginProps): Promise<{ user: User }> => {
-  const response = await nextServer.post<{ user: User }>('api/auth/login', data);
+  const response = await nextServer.post<{ user: User }>('auth/login', data);
 
   return response.data;
 };
 
 export const logout = async (): Promise<void> => {
-  await nextServer.post('api/auth/logout');
+  await nextServer.post('auth/logout');
 };
 
 export interface MessageResponse {
@@ -49,12 +49,12 @@ export interface MessageResponse {
 }
 
 export const refresh = async (): Promise<MessageResponse> => {
-  const response = await nextServer.post<MessageResponse>('api/auth/refresh');
+  const response = await nextServer.post<MessageResponse>('auth/refresh');
   return response.data;
 };
 
 export const fetchCurrentUser = async (): Promise<User> => {
-  const response = await nextServer.get<User>('api/auth/me');
+  const response = await nextServer.get<User>('auth/me');
   return response.data;
 };
 
