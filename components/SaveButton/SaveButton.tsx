@@ -53,7 +53,7 @@ export default function SaveButton({ recipeId, initialIsFavorite }: SaveButtonPr
   });
 
   const handleSaveClick = async () => {
-    if (favoriteMutation.isPending  isCheckingAuth) {
+    if (favoriteMutation.isPending || isCheckingAuth) {
       return;
     }
 
@@ -86,7 +86,7 @@ export default function SaveButton({ recipeId, initialIsFavorite }: SaveButtonPr
       <button
         className={styles.button}
         onClick={handleSaveClick}
-        disabled={favoriteMutation.isPending  isCheckingAuth}
+        disabled={favoriteMutation.isPending || isCheckingAuth}
       >
         {favoriteMutation.isPending || isCheckingAuth
           ? 'Saving...'
@@ -96,7 +96,7 @@ export default function SaveButton({ recipeId, initialIsFavorite }: SaveButtonPr
         <Image
           className={styles.icon}
           src={isFavorite ? '/icons/iconFavoriteFilled.svg' : '/icons/iconSave.svg'}
-          alt=""
+          alt="Save icon"
           aria-hidden="true"
           width={24}
           height={24}
