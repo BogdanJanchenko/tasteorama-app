@@ -6,8 +6,20 @@
   justify-content: space-between;
 
   width: 100%;
-
+  max-width: 361px;
   padding: 8px 0 18px;
+}
+
+@media screen and (min-width: 768px) {
+  .filters {
+    max-width: 704px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .filters {
+    max-width: 1225px;
+  }
 }
 
 .recipesCount {

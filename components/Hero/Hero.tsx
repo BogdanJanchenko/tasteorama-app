@@ -22,15 +22,15 @@ export default function Hero({ onSearch, toast }: PropsHero) {
   return (
     <section className={css.hero}>
       <Container>
-      <div className={css.heroContent}>
-        <h1>
-          Plan, Cook, and <br />
-          Share Your Flavors
-        </h1>
-        <SearchBox onSearch={handleSubmit} loading={loading} />
-        {toast && <div className={css.heroToast}> {toast} </div>}
-      </div>
-        </Container>
+        <div className={css.heroContent}>
+          <h1>
+            Plan, Cook, and <br />
+            Share Your Flavors
+          </h1>
+          <SearchBox onSearch={handleSubmit} loading={loading} />
+          {toast && <div className={css.heroToast}> {toast} </div>}
+        </div>
+      </Container>
     </section>
   );
 }
