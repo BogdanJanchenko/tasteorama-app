@@ -1,32 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+
 import RecipesList from '../RecipesList/RecipesList';
 import Loader from '../Loader/Loader';
-import { fetchUserRecipes, fetchFavoriteRecipes } from '@/lib/clientApi';
-import Pagination from '../Pagination/Pagination';
-import { fetchCategories, fetchIngredients } from '@/lib/clientApi';
+import Filters from '../Filters/Filters';
+import LoadMoreButton from '../LoadMoreBtn/LoadMoreBtn';
+
+import {
+  fetchUserRecipes,
+  fetchFavoriteRecipes,
+  fetchCategories,
+  fetchIngredients,
+} from '@/lib/clientApi';
+
 import { Category } from '@/types/category';
 import { Ingredient } from '@/types/indredient';
-import Filters from '../Filters/Filters';
-import { useEffect } from 'react';
+import { ServerRecipe } from '@/types/serverRecipe';
 
 interface Props {
-  recipesType: string;
+  recipesType: 'own' | 'favorites';
 }
 
 export default function ProfileRecipes({ recipesType }: Props) {
   const [page, setPage] = useState(1);
+
+  const [recipes, setRecipes] = useState<ServerRecipe[]>([]);
+
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [ingredient, setIngredient] = useState('');
 
   useEffect(() => {
     setPage(1);
-  }, [search, category, ingredient]);
+    setRecipes([]);
+  }, [recipesType, search, category, ingredient]);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ['profileRecipes', recipesType, page, search, category, ingredient],
     queryFn: () =>
       recipesType === 'own'
@@ -46,6 +57,16 @@ export default function ProfileRecipes({ recipesType }: Props) {
           }),
   });
 
+  useEffect(() => {
+    if (!data) return;
+
+    if (page === 1) {
+      setRecipes(data.recipes);
+    } else {
+      setRecipes((prev) => [...prev, ...data.recipes]);
+    }
+  }, [data, page]);
+
   const { data: categories } = useQuery<Category[]>({
     queryKey: ['categories'],
     queryFn: fetchCategories,
@@ -58,7 +79,7 @@ export default function ProfileRecipes({ recipesType }: Props) {
     staleTime: Infinity,
   });
 
-  if (isLoading) {
+  if (isLoading && page === 1) {
     return <Loader />;
   }
 
@@ -67,7 +88,6 @@ export default function ProfileRecipes({ recipesType }: Props) {
   }
 
   const totalPages = data?.totalPages ?? 1;
-  const recipes = data?.recipes ?? [];
   const recipesCount = data?.totalRecipes ?? 0;
 
   return (
@@ -81,17 +101,14 @@ export default function ProfileRecipes({ recipesType }: Props) {
           selectedIngredient={ingredient}
           onCategoryChange={(value) => {
             setCategory(value);
-            setPage(1);
           }}
           onIngredientChange={(value) => {
             setIngredient(value);
-            setPage(1);
           }}
           onResetFilters={() => {
+            setSearch('');
             setCategory('');
             setIngredient('');
-            setSearch('');
-            setPage(1);
           }}
         />
       )}
@@ -101,8 +118,20 @@ export default function ProfileRecipes({ recipesType }: Props) {
         isOwn={recipesType === 'own'}
         favoriteAction={recipesType === 'favorites' ? 'remove' : 'add'}
       />
-
-      {totalPages > 1 && <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          width: '100%',
+          marginTop: '32px',
+        }}
+      >
+        <LoadMoreButton
+          hasMore={page < totalPages}
+          isLoading={isFetching}
+          onClick={() => setPage((prev) => prev + 1)}
+        />
+      </div>
     </>
   );
 }

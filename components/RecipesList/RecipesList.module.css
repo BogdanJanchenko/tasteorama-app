@@ -1,37 +1,38 @@
 .list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 24px;
-  align-items: center;
-  justify-content: space-between;
+
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
 }
 
 .profileList {
-  align-items: stretch;
   gap: 14px;
 }
 
 @media screen and (min-width: 768px) {
   .list {
-    flex-wrap: wrap;
-    flex-direction: row;
-    max-width: 705px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
   }
 
   .profileList {
     gap: 16px;
-    max-width: 100%;
   }
 }
 
 @media screen and (min-width: 1440px) {
   .list {
-    max-width: 1225px;
-    width: 1225px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
   }
 
   .profileList {
-    max-width: 100%;
     gap: 14px;
   }
 }

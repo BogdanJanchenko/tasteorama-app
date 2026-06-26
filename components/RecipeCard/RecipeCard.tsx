@@ -107,19 +107,34 @@ const RecipeCard = ({
 
         {isOwn ? (
           <button
-            className={`${styles.favorite} ${isProfileVariant ? styles.profileFavorite : ''}`}
+            className={`${styles.favorite} ${styles.deleteButton} ${
+              isProfileVariant ? styles.profileFavorite : ''
+            }`}
             onClick={() => deleteMutation.mutate()}
             disabled={deleteMutation.isPending}
           >
-            {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+            {deleteMutation.isPending ? (
+              '...'
+            ) : (
+              <Image src="/icons/iconDelete.svg" alt="Delete recipe" width={24} height={24} />
+            )}
           </button>
         ) : (
           <button
-            className={`${styles.favorite} ${isProfileVariant ? styles.profileFavorite : ''}`}
+            className={`
+      ${styles.favorite}
+      ${isRemovingFavorite ? styles.removeFavorite : ''}
+      ${isProfileVariant ? styles.profileFavorite : ''}
+    `}
             onClick={() => favoriteMutation.mutate()}
             disabled={favoriteMutation.isPending}
           >
-            <Image src="/icons/iconFavorite.svg" alt="Favorite icon" width={24} height={24} />
+            <Image
+              src={isRemovingFavorite ? '/icons/iconDelete.svg' : '/icons/iconFavorite.svg'}
+              alt={isRemovingFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              width={24}
+              height={24}
+            />
           </button>
         )}
       </div>
