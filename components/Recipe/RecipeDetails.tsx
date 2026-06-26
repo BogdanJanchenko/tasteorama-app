@@ -48,17 +48,17 @@ export default function RecipeDetails({ initialRecipe, recipeId }: RecipeDetails
             <h3 className={styles.infoTitle}>General informations</h3>
 
             <div className={styles.infoItem}>
-              <span className={styles.label}>Category</span>
+              <span className={styles.label}>Category: </span>
               <span>{initialRecipe.category}</span>
             </div>
 
             <div className={styles.infoItem}>
-              <span className={styles.label}>Cooking time</span>
+              <span className={styles.label}>Cooking time: </span>
               <span>{initialRecipe.cookingTime}</span>
             </div>
 
             <div className={styles.infoItem}>
-              <span className={styles.label}>Calories</span>
+              <span className={styles.label}>Calories: </span>
               <span>{initialRecipe.calories}</span>
             </div>
           </aside>
